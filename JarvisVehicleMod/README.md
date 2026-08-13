@@ -1,6 +1,6 @@
 # JARVIS Vehicle Mod für GTA V
 
-Dieser Mod bringt ein hochentwickeltes K.I.T.T. / "JARVIS" Fahrzeug-System nach Los Santos. Das Script wurde in C# für ScriptHookVDotNet v3 geschrieben.
+Dieser Mod bringt ein hochentwickeltes K.I.T.T. / "JARVIS" Fahrzeug-System nach Los Santos. Das Script wurde in C# für ScriptHookVDotNet geschrieben.
 
 ## Features
 * **Autonomes Herbeirufen:** Rufe dein Fahrzeug per Knopfdruck zu dir (fährt autonom zu deiner Position).
@@ -14,15 +14,8 @@ Dieser Mod bringt ein hochentwickeltes K.I.T.T. / "JARVIS" Fahrzeug-System nach 
 * [ScriptHookVDotNet v3](https://github.com/scripthookvdotnet/scripthookvdotnet/releases)
 
 ## Installation
-1. Stelle sicher, dass **ScriptHookV** und **ScriptHookVDotNet v3** in deinem GTA V Hauptverzeichnis (dort wo die `GTA5.exe` liegt) installiert sind.
-2. Es gibt zwei Möglichkeiten, das Script zu nutzen:
-
-   **Möglichkeit A: Als kompiliertes Script (.dll) - Empfohlen**
-   - Kopiere die kompilierte `JarvisVehicleMod.dll` aus diesem Ordner in den `scripts` Ordner in deinem GTA V Verzeichnis. (Wenn der `scripts` Ordner nicht existiert, erstelle ihn einfach).
-
-   **Möglichkeit B: Als Source Script (.cs)**
-   - Kopiere die Datei `JarvisVehicleScript.cs` direkt in den `scripts` Ordner in deinem GTA V Verzeichnis. ScriptHookVDotNet wird das Script beim Start des Spiels automatisch kompilieren.
-
+1. Stelle sicher, dass **ScriptHookV** und **ScriptHookVDotNet v3** in deinem GTA V Hauptverzeichnis installiert sind.
+2. Kopiere die Datei **`JarvisVehicleScript.cs`** in den **`scripts`** Ordner in deinem GTA V Verzeichnis (z. B. `C:\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\scripts`). Wenn der Ordner nicht existiert, erstelle ihn.
 3. Starte das Spiel.
 
 ## Standard Steuerung (Keybinds)
@@ -31,8 +24,7 @@ Dieser Mod bringt ein hochentwickeltes K.I.T.T. / "JARVIS" Fahrzeug-System nach 
 * `Numpad 3`: **EMP-Schockwelle** - Löst eine Schockwelle aus, die Fremdfahrzeuge im Umkreis von 30m für 10 Sekunden lahmlegt.
 * `Numpad 4`: **Verteidigungsmodus umschalten** - Aktiviert/Deaktiviert das automatische Scannen nach Feinden. Erkannte Feinde werden gerammt.
 
-*(Hinweis: Die Tastenbelegung, Radien und Geschwindigkeiten können im Quellcode in der Klasse `Config` angepasst werden.)*
-
-## Fehlerbehebung / Konsole
-* Um Scripts im Spiel neu zu laden, drücke die `Einfügen` (Insert) Taste, um die ScriptHookVDotNet Konsole zu öffnen, und tippe `Reload()` ein.
-* Unten links über der Minimap werden JARVIS-Statusmeldungen (Subtitles) angezeigt, damit du weißt, in welchem Modus sich das System befindet.
+## Fehlerbehebung
+* Wenn der Mod nicht lädt, stelle sicher, dass du im Spiel die `Einfügen` (Insert) Taste drückst, um die ScriptHook-Konsole zu öffnen und überprüfe, ob Fehler angezeigt werden.
+* Du kannst das Script jederzeit mit dem Befehl `Reload()` in der Konsole neu laden.
+* Stelle sicher, dass du in den Windows-Eigenschaften der `.cs`-Datei nicht blockiert bist.
