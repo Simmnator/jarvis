@@ -58,19 +58,22 @@ namespace JarvisVehicleMod
         {
             if (_initialized) return;
 
-            if (Game.Player != null && Game.Player.Character != null)
-            {
-                GTA.UI.Notification.Show("~b~JARVIS System online.~w~ Bereit fuer Eingaben (Numpad 1-4).");
-                _initialized = true;
-            }
+            // Warte bis das Spiel komplett geladen ist, um Crashes beim Ladebildschirm zu verhindern
+            if (Game.IsLoading || Game.Player == null || Game.Player.Character == null) return;
+
+            GTA.UI.Notification.Show("~b~JARVIS System online.~w~ Bereit fuer Eingaben (Numpad 1-4).");
+            _initialized = true;
         }
 
         private void OnTick(object sender, EventArgs e)
         {
-            Initialize();
-
             try
             {
+                Initialize();
+
+                // Falls noch nicht initialisiert (im Ladebildschirm), breche Tick sofort ab
+                if (!_initialized) return;
+
                 HandleState();
                 HandleEmpTimers();
 
@@ -79,14 +82,16 @@ namespace JarvisVehicleMod
                     ExecuteDefenseProtocol();
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                GTA.UI.Notification.Show($"~r~JARVIS Tick Error:~w~ {ex.Message}");
+                // Silent catch im Tick, um Spielabstürze komplett zu vermeiden
             }
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
+            if (!_initialized) return; // Verhindere Tasteneingaben waehrend Ladescreen
+
             if (e.KeyCode == Config.KeySummon)
             {
                 SummonVehicle();
