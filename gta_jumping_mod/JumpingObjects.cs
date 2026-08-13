@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GTA;
 using GTA.Math;
 using GTA.Native;
@@ -13,9 +14,13 @@ public class JumpingObjects : Script
     private Dictionary<int, long> _processedEntities = new Dictionary<int, long>();
     private const long CooldownMs = 2000; // Cooldown, damit dasselbe Objekt nicht spammt
 
+    private long _lastCleanupTime = 0;
+    private const long CleanupIntervalMs = 60000; // Aufräumen alle 60 Sekunden
+
     public JumpingObjects()
     {
         Tick += OnTick;
+        GTA.UI.Notification.Show("~g~Jumping Objects Mod~w~ wurde erfolgreich geladen!");
     }
 
     private void OnTick(object sender, EventArgs e)
@@ -29,10 +34,29 @@ public class JumpingObjects : Script
         Vector3 playerPos = playerVehicle.Position;
         Vector3 playerForward = playerVehicle.ForwardVector;
 
-        // Hole alle Entities in der Nähe (Props, Fahrzeuge, Fußgänger)
-        Entity[] nearbyEntities = World.GetNearbyEntities(playerPos, DetectionRadius);
+        // Hole Props, Fahrzeuge und Fußgänger separat (für SHVDN v3 Kompatibilität)
+        var props = World.GetNearbyProps(playerPos, DetectionRadius);
+        var vehicles = World.GetNearbyVehicles(playerPed, DetectionRadius);
+        var peds = World.GetNearbyPeds(playerPed, DetectionRadius);
+
+        // Verbinde alle zu einer Liste
+        List<Entity> nearbyEntities = new List<Entity>();
+        nearbyEntities.AddRange(props);
+        nearbyEntities.AddRange(vehicles);
+        nearbyEntities.AddRange(peds);
 
         long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+        // Memory Cleanup
+        if (currentTime - _lastCleanupTime > CleanupIntervalMs)
+        {
+            var keysToRemove = _processedEntities.Where(kvp => currentTime - kvp.Value > CooldownMs).Select(kvp => kvp.Key).ToList();
+            foreach (var key in keysToRemove)
+            {
+                _processedEntities.Remove(key);
+            }
+            _lastCleanupTime = currentTime;
+        }
 
         foreach (Entity entity in nearbyEntities)
         {
